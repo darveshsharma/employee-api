@@ -14,7 +14,7 @@ class Api::V1::EmployeesController < ApplicationController
     employees = Employee.find(params[:id])
     render json:  {
       data: ActiveModelSerializers::SerializableResource.new(employees, each_serializer: EmployeeSerializer),
-      message: ['Employee list fetched successfully'],
+      message: ['Employee fetched successfully'],
       status: 200,
       type: 'Success'
       }

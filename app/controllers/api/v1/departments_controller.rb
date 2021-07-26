@@ -5,7 +5,7 @@ class Api::V1::DepartmentsController < ApplicationController
     departments = Department.all
     render json: {
         data: ActiveModelSerializers::SerializableResource.new(departments, each_serializer: DepartmentSerializer),
-        message: ['Employee list fetched successfully'],
+        message: ['Department list fetched successfully'],
         status: 200,
         type: 'Success'
       }
@@ -15,7 +15,7 @@ class Api::V1::DepartmentsController < ApplicationController
     departments = Department.find(params[:id])
     render json: {
         data: ActiveModelSerializers::SerializableResource.new(departments, each_serializer: DepartmentSerializer),
-        message: ['Employee list fetched successfully'],
+        message: ['Department fetched successfully'],
         status: 200,
         type: 'Success'
       }
