@@ -23,8 +23,8 @@ class Api::V1::EmployeesController < ApplicationController
   def create
     # @employee = Employee.new(employee_params)
     employee = EmployeeCreator.new(employee_params[:name],employee_params[:last_name],employee_params[:salary],employee_params[:dob],employee_params[:department_id]).call
-    if @employee.save
-      render json: @employee
+    if employee
+      render json: employee
     else
       render error: {error: 'Unable to create employee.'}, status: 400
     end

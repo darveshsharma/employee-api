@@ -2,13 +2,23 @@ class Api::V1::DepartmentsController < ApplicationController
 
 
   def index 
-    @departments = Department.all
-    render json: @departments
+    departments = Department.all
+    render json: {
+        data: ActiveModelSerializers::SerializableResource.new(departments, each_serializer: DepartmentSerializer),
+        message: ['Employee list fetched successfully'],
+        status: 200,
+        type: 'Success'
+      }
   end
 
   def show 
-    @departments = Department.find(params[:id])
-    render json: @departments
+    departments = Department.find(params[:id])
+    render json: {
+        data: ActiveModelSerializers::SerializableResource.new(departments, each_serializer: DepartmentSerializer),
+        message: ['Employee list fetched successfully'],
+        status: 200,
+        type: 'Success'
+      }
   end
 
   def create
