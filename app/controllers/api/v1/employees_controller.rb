@@ -22,9 +22,14 @@ class Api::V1::EmployeesController < ApplicationController
 
   def create
     # @employee = Employee.new(employee_params)
-    employee = EmployeeCreator.new(employee_params[:name],employee_params[:last_name],employee_params[:salary],employee_params[:dob],employee_params[:department_id]).call
+    employee = EmployeeCreator.new(employee_params).call
     if employee
-      render json: employee
+      render json:  {
+      data: ActiveModelSerializers::SerializableResource.new(employee, each_serializer: CreateempSerializer),
+      message: ['Employee created successfully'],
+      status: 200,
+      type: 'Success'
+      }
     else
       render error: {error: 'Unable to create employee.'}, status: 400
     end
