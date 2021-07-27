@@ -1,5 +1,4 @@
 class EmployeeCreator
-  attr_reader employee_params
   
   def initialize(employee_params)
     @name = employee_params[:name]
