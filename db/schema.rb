@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_26_053537) do
+ActiveRecord::Schema.define(version: 2021_07_29_123609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "availibilities", force: :cascade do |t|
+    t.bigint "employee_id"
+    t.string "day"
+    t.boolean "active"
+    t.boolean "not_active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["employee_id"], name: "index_availibilities_on_employee_id"
+  end
 
   create_table "departments", force: :cascade do |t|
     t.string "name"
@@ -30,6 +40,15 @@ ActiveRecord::Schema.define(version: 2021_07_26_053537) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["department_id"], name: "index_employees_on_department_id"
+  end
+
+  create_table "slots", force: :cascade do |t|
+    t.bigint "availibility_id"
+    t.integer "from"
+    t.integer "to"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["availibility_id"], name: "index_slots_on_availibility_id"
   end
 
 end
