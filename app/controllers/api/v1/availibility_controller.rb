@@ -1,8 +1,8 @@
 class Api::V1::AvailibilityController < ApplicationController
   def index 
-    @avalibilitys = Availibility.all
+    availibilitys = Availibility.all
     render json: {
-        data: @avalibilitys,
+        data: ActiveModelSerializers::SerializableResource.new(availibilitys, each_serializer: AvailibilitySerializer),
         message: ['avalibility list fetched successfully'],
         status: 200,
         type: 'Success'
@@ -44,7 +44,7 @@ class Api::V1::AvailibilityController < ApplicationController
     end
     if @availibilitys
       render json: {
-        data: @availibilitys,
+        data: ActiveModelSerializers::SerializableResource.new(@availibilitys, each_serializer: AvailibilitySerializer),
         message: 'avalibility updated succesfully'},status: 200
     else
       render error: {error: 'Unable to update.'}, status: 400
