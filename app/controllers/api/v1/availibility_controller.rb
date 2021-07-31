@@ -2,7 +2,7 @@ class Api::V1::AvailibilityController < ApplicationController
   def index 
     @avalibilitys = Availibility.all
     render json: {
-        data: @availibilitys,
+        data: @avalibilitys,
         message: ['avalibility list fetched successfully'],
         status: 200,
         type: 'Success'
@@ -10,15 +10,15 @@ class Api::V1::AvailibilityController < ApplicationController
   end
 
   def show 
-    @avalibilitys = Availibility.find(params[:id])
+    availibilitys = Availibility.where(employee_id: params[:id])
     render json:  {
-      data: @availibilitys,
+      data: ActiveModelSerializers::SerializableResource.new(availibilitys, each_serializer: AvailibilitySerializer),
       message: ['avalibility fetched successfully'],
       status: 200,
       type: 'Success'
       }
   end
-
+  
   def create
     @availibilities=[]
     avalibility_params[:availibilities].each do |i|
@@ -38,19 +38,23 @@ class Api::V1::AvailibilityController < ApplicationController
   end
   
   def update 
-    @avalibility = Availibility.find(params[:id])
-    if @avalibility
-      @avalibility.update(avalibility_params)
-      render json: {message: 'avalibility updated succesfully'},status: 200
+    @availibilitys = Availibility.where(employee_id: params[:id])
+    avalibility_params[:availibilities].each do |availibility|
+      @availibilitys.find(availibility[:id]).update(availibility)
+    end
+    if @availibilitys
+      render json: {
+        data: @availibilitys,
+        message: 'avalibility updated succesfully'},status: 200
     else
       render error: {error: 'Unable to update.'}, status: 400
     end
   end
 
   def destroy 
-    @avalibility.find(params[:id])
+    @avalibility = Availibility.where(employee_id: params[:id])
     if @avalibility
-      @avalibility.destroy
+      @avalibility.delete_all
       render json: {message: 'avalibility is deleted succesfully'},status: 200
     else
       render error: {error: 'Unable to delete.'}, status: 400
@@ -60,7 +64,7 @@ class Api::V1::AvailibilityController < ApplicationController
 
   def avalibility_params
     params.permit(availibilities:
-      [:employee_id, :day, :active, :not_active,
+      [:id, :employee_id, :day, :active, :not_active,
       slots_attributes: [:id, :from, :to]]
       )
   end
